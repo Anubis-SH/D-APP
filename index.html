@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب بدء تصميم</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color-start: #667eea;
+            --primary-color-end: #764ba2;
+            --text-color: #ffffff;
+            --input-bg: rgba(255, 255, 255, 0.1);
+            --input-border: rgba(255, 255, 255, 0.2);
+            --input-focus-border: rgba(255, 255, 255, 0.8);
+            --input-placeholder: rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color-start) 0%, var(--primary-color-end) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .glass-form {
+            background: var(--input-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--input-border);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-title {
+            text-align: center;
+            color: var(--text-color);
+            font-weight: 700;
+            margin-bottom: 35px;
+            font-size: 2.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group .input-icon {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: var(--input-placeholder);
+            transition: color 0.3s;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            background: rgba(255,255,255, 0.15);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            color: var(--text-color);
+            font-size: 1rem;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--input-placeholder);
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--input-focus-border);
+            background: rgba(255,255,255, 0.2);
+        }
+
+        .form-input:focus ~ .input-icon {
+            color: var(--text-color);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            padding-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        .options-group {
+            margin-bottom: 25px;
+        }
+        
+        .options-group-label {
+            display: block;
+            color: var(--text-color);
+            font-weight: 500;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .radio-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .radio-buttons label {
+            flex: 1;
+            padding: 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            color: var(--text-color);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .radio-buttons input[type="radio"] {
+            display: none;
+        }
+
+        .radio-buttons input[type="radio"]:checked + label {
+            background: var(--text-color);
+            color: var(--primary-color-end);
+            border-color: var(--text-color);
+        }
+        
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .dimensions-grid .form-input {
+            text-align: center;
+            padding-right: 20px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--text-color);
+            color: var(--primary-color-end);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .submit-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .glass-form {
+                padding: 30px 25px;
+            }
+            .form-row, .dimensions-grid {
+                grid-template-columns: 1fr;
+            }
+            .radio-buttons {
+                flex-direction: column;
+            }
+            .form-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-wrapper">
+        <form class="glass-form" action="#">
+            <h2 class="form-title">طلب بدء تصميم</h2>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <input class="form-input" type="text" id="delegate_name" placeholder="اسم المندوب" required>
+                    <i class="fa-solid fa-user input-icon"></i>
+                </div>
+                <div class="input-group">
+                    <input class="form-input" type="text" id="product_name" placeholder="اسم المنتج" required>
+                    <i class="fa-solid fa-box-archive input-icon"></i>
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 25px;">
+                <input class="form-input" type="text" id="client_name" placeholder="اسم الشركة / العميل" required>
+                <i class="fa-solid fa-building input-icon"></i>
+            </div>
+            
+            <div class="options-group">
+                <span class="options-group-label">نوع الطباعة</span>
+                <div class="radio-buttons">
+                    <input type="radio" id="print_type_1" name="print_type" value="color_separation" checked>
+                    <label for="print_type_1">
+                        <i class="fa-solid fa-palette"></i> فصل ألوان
+                    </label>
+                    <input type="radio" id="print_type_2" name="print_type" value="water_based">
+                    <label for="print_type_2">
+                        <i class="fa-solid fa-water"></i> طباعة مائية
+                    </label>
+                </div>
+            </div>
+
+            <div class="options-group">
+                <span class="options-group-label">المقاس (بالسنتيمتر)</span>
+                <div class="dimensions-grid">
+                    <input class="form-input" type="number" name="length" placeholder="طول" min="0" required>
+                    <input class="form-input" type="number" name="width" placeholder="عرض" min="0" required>
+                    <input class="form-input" type="number" name="height" placeholder="ارتفاع" min="0">
+                </div>
+            </div>
+
+            <textarea class="form-textarea" id="details" name="details" placeholder="تفاصيل اضافية..."></textarea>
+
+            <button type="submit" class="submit-btn">إرسال الطلب</button>
+        </form>
+    </div>
+
+    <script type="module">
+        // 1. استيراد الدوال المطلوبة من مكتبات Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+        // 2. بيانات الربط الخاصة بك (من حسابك على Firebase)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCRg-Et1SfnILZZp7rl1omjBF067O8n2Is",
+            authDomain: "design-requests-app.firebaseapp.com",
+            projectId: "design-requests-app",
+            storageBucket: "design-requests-app.appspot.com",
+            messagingSenderId: "465684228323",
+            appId: "1:465684228323:web:b3871e93b027ed4a997dd6",
+            measurementId: "G-WS8RNQCYCT"
+        };
+
+        // 3. تهيئة Firebase وتجهيز الاتصال بـ Firestore
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 4. كود التعامل مع الفورم عند الإرسال
+        const form = document.querySelector('.glass-form');
+        const submitButton = document.querySelector('.submit-btn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جار الإرسال...';
+            
+            try {
+                // تجميع البيانات من حقول الإدخال
+                const delegateName = document.getElementById('delegate_name').value;
+                const productName = document.getElementById('product_name').value;
+                const clientName = document.getElementById('client_name').value;
+                const printType = document.querySelector('input[name="print_type"]:checked').value;
+                const length = document.querySelector('input[name="length"]').value;
+                const width = document.querySelector('input[name="width"]').value;
+                const height = document.querySelector('input[name="height"]').value || 'N/A';
+                const details = document.getElementById('details').value;
+
+                // إرسال البيانات إلى Firestore
+                const docRef = await addDoc(collection(db, "designRequests"), {
+                    delegateName: delegateName,
+                    productName: productName,
+                    clientName: clientName,
+                    printType: printType,
+                    dimensions: {
+                        length: length,
+                        width: width,
+                        height: height
+                    },
+                    details: details,
+                    isRead: false, // <-- الحقل الجديد لدعم لوحة التحكم
+                    timestamp: serverTimestamp()
+                });
+
+                console.log("Document written with ID: ", docRef.id);
+                submitButton.style.background = '#28a745';
+                submitButton.innerHTML = '<i class="fa-solid fa-check"></i> تم الإرسال بنجاح';
+                form.reset();
+                
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                submitButton.style.background = '#dc3545';
+                submitButton.innerHTML = '<i class="fa-solid fa-xmark"></i> حدث خطأ، حاول مجددًا';
+            } finally {
+                // إعادة الزر لحالته الطبيعية بعد ثانيتين
+                setTimeout(() => {
+                    submitButton.disabled = false;
+                    submitButton.style.background = ''; 
+                    submitButton.innerHTML = 'إرسال الطلب';
+                }, 2500);
+            }
+        });
+    </script>
+</body>
+</html>
