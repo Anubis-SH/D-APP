@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - طلبات التصميم</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        :root {
+            --font-family: 'Tajawal', sans-serif;
+            --bg-main: #f0f2f5;
+            --bg-sidebar: #ffffff;
+            --bg-header: #ffffff;
+            --text-dark: #1c1e21;
+            --text-secondary: #65676b;
+            --primary-color: #0d6efd;
+            --primary-hover: #0b5ed7;
+            --border-color: #dee2e6;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-main);
+        }
+
+        #app-wrapper {
+            display: flex;
+        }
+
+        #sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            background-color: var(--bg-sidebar);
+            border-left: 1px solid var(--border-color);
+            transition: right 0.3s ease;
+            z-index: 1030;
+        }
+
+        #main-content {
+            margin-right: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            transition: margin-right 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 1.15rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-header .navbar-brand {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.25rem;
+            color: #333;
+            font-weight: 500;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: #e9ecef;
+            color: var(--primary-color);
+            border-right: 3px solid var(--primary-color);
+        }
+        .nav-link .fa-fw {
+             margin-left: 10px;
+        }
+
+        .main-header {
+            background-color: var(--bg-header);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            padding: 0.75rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border: none;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .data-table {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+        .data-table th {
+            font-weight: 700;
+            font-size: 0.9rem;
+            background-color: #f8f9fa;
+        }
+
+        .request-row:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+
+        .badge.bg-success-light {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+        
+        .badge.bg-info-light {
+             background-color: #cff4fc;
+             color: #055160;
+        }
+
+        .modal-body strong { color: var(--text-dark); opacity: 0.7; }
+
+        @media (max-width: 992px) {
+            #sidebar {
+                right: -260px; /* Hidden by default */
+            }
+            #sidebar.active {
+                right: 0;
+            }
+            #main-content {
+                margin-right: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div id="app-wrapper">
+        <nav id="sidebar" :class="{ 'active': isSidebarOpen }">
+            <div class="sidebar-header">
+                <a class="navbar-brand fs-5" href="#">
+                    <i class="fa-solid fa-rocket text-primary me-2"></i>لوحة التحكم
+                </a>
+            </div>
+            <ul class="nav flex-column pt-3">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="fa-solid fa-home fa-fw"></i> طلبات التصميم</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div id="main-content">
+            <header class="main-header d-flex justify-content-between align-items-center">
+                <button class="btn d-lg-none" @click="toggleSidebar"><i class="fa-solid fa-bars"></i></button>
+                <div class="input-group" style="max-width: 400px;">
+                    <span class="input-group-text"><i class="fa-solid fa-search"></i></span>
+                    <input type="text" class="form-control" placeholder="ابحث بكود الطلب, اسم العميل أو المنتج..." v-model="searchQuery">
+                </div>
+            </header>
+
+            <main class="container-fluid p-4">
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="card kpi-card shadow-sm"><div class="card-body">
+                            <h5 class="card-title text-muted fw-bold">إجمالي الطلبات</h5>
+                            <p class="card-text fs-2 fw-bolder">{{ requests.length }}</p>
+                        </div></div>
+                    </div>
+                    <div class="col-md-4">
+                         <div class="card kpi-card shadow-sm" style="border-color: #dc3545;"><div class="card-body">
+                            <h5 class="card-title text-muted fw-bold">طلبات جديدة</h5>
+                            <p class="card-text fs-2 fw-bolder">{{ unreadCount }}</p>
+                        </div></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card kpi-card shadow-sm" style="border-color: #198754;"><div class="card-body">
+                            <h5 class="card-title text-muted fw-bold">طلبات مقروءة</h5>
+                            <p class="card-text fs-2 fw-bolder">{{ readCount }}</p>
+                        </div></div>
+                    </div>
+                </div>
+
+                <div class="data-table">
+                    <div class="p-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h5 class="mb-0 fw-bold">قائمة الطلبات</h5>
+                        <div class="d-flex align-items-center gap-2">
+                            <div v-if="selectedIds.length > 0" class="d-flex gap-2">
+                                <button class="btn btn-outline-success btn-sm" @click="markSelectedAsRead"><i class="fa-solid fa-check-double"></i> تحديد كمقروء</button>
+                                <button class="btn btn-outline-danger btn-sm" @click="deleteSelected"><i class="fa-solid fa-trash-can"></i> حذف المحدد</button>
+                                <span class="vr"></span>
+                            </div>
+                            <div class="btn-group btn-group-sm">
+                                <button type="button" class="btn" :class="filterStatus === 'all' ? 'btn-primary' : 'btn-outline-secondary'" @click="filterStatus = 'all'">الكل</button>
+                                <button type="button" class="btn" :class="filterStatus === 'unread' ? 'btn-primary' : 'btn-outline-secondary'" @click="filterStatus = 'unread'">الجديدة</button>
+                                <button type="button" class="btn" :class="filterStatus === 'read' ? 'btn-primary' : 'btn-outline-secondary'" @click="filterStatus = 'read'">المقروءة</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-3" style="width: 50px;"><input class="form-check-input" type="checkbox" @change="toggleSelectAll" :checked="isAllSelected"></th>
+                                    <th>كود الطلب</th>
+                                    <th>العميل</th>
+                                    <th>المنتج</th>
+                                    <th>نوع الفورمة</th>
+                                    <th>المندوب</th>
+                                    <th>تاريخ الطلب</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-if="loading"><td colspan="7" class="text-center p-5"><div class="spinner-border text-primary" role="status"></div></td></tr>
+                                <tr v-else-if="filteredRequests.length === 0"><td colspan="7" class="text-center p-5 text-muted">لا توجد نتائج تطابق بحثك.</td></tr>
+                                <tr v-for="req in filteredRequests" :key="req.id" @click="showDetails(req)" class="request-row" :class="{ 'table-primary': selectedIds.includes(req.id) }">
+                                    <td class="ps-3" @click.stop><input class="form-check-input" type="checkbox" :value="req.id" v-model="selectedIds"></td>
+                                    <td><span class="badge bg-primary-subtle text-primary-emphasis fw-bold p-2">#{{ req.orderCode }}</span></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span v-if="!req.isRead" class="bg-danger rounded-circle me-2" style="width:10px; height:10px;" title="جديد"></span>
+                                            <span class="fw-bold">{{ req.clientName }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-secondary">{{ req.productName }}</td>
+                                    <td><span class="badge" :class="req.dieCutType === 'فورمة جديدة' ? 'bg-success-light' : 'bg-info-light'">{{ req.dieCutType }}</span></td>
+                                    <td class="text-secondary">{{ req.delegateName }}</td>
+                                    <td class="text-secondary">{{ formatTimestamp(req.timestamp) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detailsModal" tabindex="-1">
+         <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" v-if="selectedRequest">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-5 fw-bold">تفاصيل الطلب: #{{selectedRequest.orderCode}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-6"><strong>العميل:</strong> <p class="mb-0 text-secondary">{{ selectedRequest.clientName }}</p></div>
+                        <div class="col-md-6"><strong>المندوب:</strong> <p class="mb-0 text-secondary">{{ selectedRequest.delegateName }}</p></div>
+                        <div class="col-md-6"><strong>المنتج:</strong> <p class="mb-0 text-secondary">{{ selectedRequest.productName }}</p></div>
+                        <div class="col-md-6"><strong>نوع الطباعة:</strong> <p class="mb-0 text-secondary">{{ selectedRequest.printType }}</p></div>
+                        <div class="col-md-6"><strong>نوع الفورمة:</strong> <p class="mb-0 text-secondary">{{ selectedRequest.dieCutType }}</p></div>
+                         <div class="col-md-6"><strong>المقاسات (طول x عرض x ارتفاع):</strong>
+                           <p class="mb-0 text-secondary">{{ selectedRequest.dimensions.length }}سم x {{ selectedRequest.dimensions.width }}سم x {{ selectedRequest.dimensions.height || 'N/A' }}سم</p>
+                        </div>
+                        <div class="col-12"><strong>تفاصيل إضافية:</strong>
+                            <p class="p-3 rounded mb-0 bg-light text-dark">{{ selectedRequest.details || 'لا يوجد' }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div>
+                         <button type="button" class="btn btn-danger" @click="deleteRequest(selectedRequest.id)"><i class="fa-solid fa-trash-can me-2"></i>حذف</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="button" class="btn btn-primary" @click="copyDetails"><i class="fa-solid fa-copy me-2"></i>نسخ التفاصيل</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, orderBy, query, doc, updateDoc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCRg-Et1SfnILZZp7rl1omjBF067O8n2Is",
+        authDomain: "design-requests-app.firebaseapp.com",
+        projectId: "design-requests-app",
+        storageBucket: "design-requests-app.appspot.com",
+        messagingSenderId: "465684228323",
+        appId: "1:465684228323:web:b3871e93b027ed4a997dd6",
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
+    const { createApp, ref, onMounted, computed } = Vue;
+
+    createApp({
+        setup() {
+            const requests = ref([]);
+            const selectedIds = ref([]);
+            const selectedRequest = ref(null);
+            const loading = ref(true);
+            const isSidebarOpen = ref(false);
+            const searchQuery = ref('');
+            const filterStatus = ref('all'); // 'all', 'read', 'unread'
+            let detailsModal = null;
+
+            const unreadCount = computed(() => requests.value.filter(req => !req.isRead).length);
+            const readCount = computed(() => requests.value.filter(req => req.isRead).length);
+            
+            const filteredRequests = computed(() => {
+                let filtered = requests.value;
+                // Filter by status
+                if (filterStatus.value === 'read') {
+                    filtered = filtered.filter(req => req.isRead);
+                } else if (filterStatus.value === 'unread') {
+                    filtered = filtered.filter(req => !req.isRead);
+                }
+                // Filter by search query
+                if (searchQuery.value) {
+                    const lowerCaseQuery = searchQuery.value.toLowerCase();
+                    filtered = filtered.filter(req => 
+                        req.clientName.toLowerCase().includes(lowerCaseQuery) ||
+                        req.productName.toLowerCase().includes(lowerCaseQuery) ||
+                        req.orderCode.toString().includes(lowerCaseQuery)
+                    );
+                }
+                return filtered;
+            });
+
+            const isAllSelected = computed(() => filteredRequests.value.length > 0 && selectedIds.value.length === filteredRequests.value.length);
+            
+            const fetchRequests = () => {
+                const q = query(collection(db, "designRequests"), orderBy("orderCode", "desc"));
+                onSnapshot(q, (snapshot) => {
+                    requests.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    loading.value = false;
+                });
+            };
+            
+            const toggleSelectAll = (e) => {
+                selectedIds.value = e.target.checked ? filteredRequests.value.map(req => req.id) : [];
+            };
+
+            const performBatchAction = async (action) => {
+                if (selectedIds.value.length === 0) return;
+                const batch = writeBatch(db);
+                selectedIds.value.forEach(id => {
+                    const docRef = doc(db, "designRequests", id);
+                    if (action === 'read') batch.update(docRef, { isRead: true });
+                    if (action === 'delete') batch.delete(docRef);
+                });
+                await batch.commit();
+                selectedIds.value = [];
+            };
+
+            const markSelectedAsRead = () => performBatchAction('read');
+            const deleteSelected = () => {
+                if (confirm(`هل أنت متأكد من حذف ${selectedIds.value.length} طلبات نهائيًا؟`)) {
+                    performBatchAction('delete');
+                }
+            };
+
+            const showDetails = (request) => {
+                selectedRequest.value = request;
+                if (!request.isRead) {
+                    updateDoc(doc(db, "designRequests", request.id), { isRead: true });
+                }
+                detailsModal.show();
+            };
+            
+            const deleteRequest = async (id) => {
+                if (confirm("هل أنت متأكد من حذف هذا الطلب نهائيًا؟")) {
+                    detailsModal.hide();
+                    await deleteDoc(doc(db, "designRequests", id));
+                }
+            };
+            
+            const formatTimestamp = (timestamp) => {
+                if (!timestamp) return '';
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                return timestamp.toDate().toLocaleDateString('ar-EG', options);
+            };
+
+            const copyDetails = () => {
+                if (!selectedRequest.value) return;
+                const req = selectedRequest.value;
+                const detailsText = `
+تفاصيل الطلب: #${req.orderCode}
+-------------------------
+العميل: ${req.clientName}
+المندوب: ${req.delegateName}
+المنتج: ${req.productName}
+نوع الطباعة: ${req.printType}
+نوع الفورمة: ${req.dieCutType}
+المقاسات: ${req.dimensions.length}سم x ${req.dimensions.width}سم x ${req.dimensions.height || 'N/A'}سم
+تفاصيل إضافية: ${req.details || 'لا يوجد'}
+                `.trim();
+                navigator.clipboard.writeText(detailsText).then(() => {
+                    alert('تم نسخ التفاصيل بنجاح!');
+                });
+            };
+
+            const toggleSidebar = () => isSidebarOpen.value = !isSidebarOpen.value;
+
+            onMounted(() => {
+                fetchRequests();
+                detailsModal = new bootstrap.Modal(document.getElementById('detailsModal'));
+            });
+
+            return {
+                requests, selectedIds, selectedRequest, loading, isSidebarOpen, searchQuery, filterStatus,
+                unreadCount, readCount, filteredRequests, isAllSelected,
+                formatTimestamp, showDetails, deleteRequest, toggleSelectAll, markSelectedAsRead, deleteSelected,
+                copyDetails, toggleSidebar
+            };
+        }
+    }).mount('#app');
+</script>
+
+</body>
+</html>
