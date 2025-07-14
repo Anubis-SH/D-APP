@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم العميل</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        body { font-family: 'Tajawal', sans-serif; background-color: #f8f9fa; }
+        .table-hover tbody tr:hover { cursor: pointer; background-color: rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+<div id="app">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#"><i class="fa-solid fa-user-shield me-2"></i>منصة الاعتماد</a>
+            <div class="d-flex align-items-center">
+                <span class="navbar-text text-white-50 me-3">{{ userEmail }}</span>
+                <button class="btn btn-outline-light btn-sm" @click="logout"><i class="fa-solid fa-right-from-bracket me-1"></i>خروج</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+        <div v-if="loading" class="text-center py-5">
+             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+             </div>
+             <p class="mt-3 text-muted">جاري تحميل البيانات...</p>
+        </div>
+
+        <div v-else-if="error" class="alert alert-danger text-center">
+            <h4 class="alert-heading"><i class="fa-solid fa-circle-exclamation me-2"></i>حدث خطأ!</h4>
+            <p>{{ error }}</p>
+            <hr>
+            <p class="mb-0">يرجى التأكد من إنشاء الفهرس المطلوب في إعدادات Firestore والمحاولة مرة أخرى.</p>
+        </div>
+
+        <div v-else>
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">طلبات قيد المراجعة</h4>
+                </div>
+                <div class="card-body">
+                    <div v-if="pendingDesigns.length === 0" class="alert alert-info mb-0">لا توجد طلبات جديدة في انتظار المراجعة.</div>
+                    <div v-else class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>الكود المرجعي</th>
+                                    <th>تاريخ الإرسال</th>
+                                    <th>رابط التصميم</th>
+                                    <th class="text-center">الإجراء المطلوب</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in pendingDesigns" :key="item.id">
+                                    <td><span class="badge bg-primary fs-6">#{{ item.referenceNumber }}</span></td>
+                                    <td>{{ formatTimestamp(item.submittedAt) }}</td>
+                                    <td><a :href="item.googleDriveLink" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-link me-2"></i>فتح الرابط</a></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-success btn-sm mx-1" @click="approveDesign(item.id, item.referenceNumber)">موافقة</button>
+                                        <button class="btn btn-danger btn-sm mx-1" @click="openRejectionModal(item.id, item.referenceNumber)">رفض</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                 <div class="card-header bg-white"><h4 class="mb-0">سجل الطلبات السابقة</h4></div>
+                 <div class="card-body">
+                    <div v-if="historyDesigns.length === 0" class="alert alert-secondary mb-0">لا توجد طلبات في الأرشيف.</div>
+                    <div v-else class="table-responsive">
+                        <table class="table align-middle">
+                            <thead><tr><th>الكود المرجعي</th><th>الحالة</th><th>سبب الرفض (إن وجد)</th><th>تاريخ الرد</th></tr></thead>
+                            <tbody>
+                                <tr v-for="item in historyDesigns" :key="item.id">
+                                    <td><span class="badge bg-secondary fs-6">#{{ item.referenceNumber }}</span></td>
+                                    <td><span class="badge" :class="item.status === 'approved' ? 'bg-success' : 'bg-danger'">{{ item.status === 'approved' ? 'تمت الموافقة' : 'تم الرفض' }}</span></td>
+                                    <td>{{ item.rejectionReason || '—' }}</td>
+                                    <td>{{ formatTimestamp(item.respondedAt) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="rejectionModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header"><h5 class="modal-title">رفض الطلب رقم #{{ rejection.referenceNumber }}</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+          <div class="modal-body">
+            <label for="rejectionReason" class="form-label">يرجى ذكر سبب الرفض:</label>
+            <textarea id="rejectionReason" v-model="rejection.reason" class="form-control" rows="4" required></textarea>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button><button type="button" class="btn btn-danger" @click="submitRejection">تأكيد الرفض</button></div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCRg-Et1SfnILZZp7rl1omjBF067O8n2Is",
+        authDomain: "design-requests-app.firebaseapp.com",
+        projectId: "design-requests-app",
+        storageBucket: "design-requests-app.appspot.com",
+        messagingSenderId: "465684228323",
+        appId: "1:465684228323:web:b3871e93b027ed4a997dd6"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const { createApp, ref, onMounted, computed } = Vue;
+
+    createApp({
+        setup() {
+            const loading = ref(true);
+            const error = ref(null); // New state for handling errors
+            const userEmail = ref('');
+            const allDesigns = ref([]);
+            const rejection = ref({ id: null, referenceNumber: null, reason: '' });
+            let rejectionModal = null;
+            
+            const pendingDesigns = computed(() => allDesigns.value.filter(d => d.status === 'pending'));
+            const historyDesigns = computed(() => allDesigns.value.filter(d => d.status !== 'pending').sort((a, b) => (b.respondedAt || 0) - (a.respondedAt || 0) ));
+
+            const fetchDesigns = (email) => {
+                try {
+                    const q = query(collection(db, 'designApprovals'), where('clientEmail', '==', email), orderBy('submittedAt', 'desc'));
+                    
+                    onSnapshot(q, 
+                        (snapshot) => { // Success Callback
+                            allDesigns.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            loading.value = false;
+                            error.value = null; // Clear any previous errors on success
+                        }, 
+                        (err) => { // Error Callback
+                            console.error("Firestore Listener Error:", err);
+                            error.value = "حدث خطأ في الاتصال بقاعدة البيانات. تأكد من أن الفهرس (Index) المطلوب تم إنشاؤه بشكل صحيح.";
+                            loading.value = false; // Stop loading on error
+                        }
+                    );
+
+                } catch (e) {
+                    console.error("Error setting up query:", e);
+                    error.value = "حدث خطأ غير متوقع أثناء إعداد طلب البيانات.";
+                    loading.value = false;
+                }
+            };
+            
+            const approveDesign = async (id, refNum) => {
+                 if (!confirm(`هل أنت متأكد من الموافقة على الطلب رقم #${refNum}؟`)) return;
+                 await updateDoc(doc(db, 'designApprovals', id), { status: 'approved', respondedAt: serverTimestamp() });
+                 alert(`تمت الموافقة على تنفيذ الطلب رقم [${refNum}]`);
+            };
+            
+            const openRejectionModal = (id, refNum) => {
+                rejection.value = { id, referenceNumber: refNum, reason: '' };
+                rejectionModal.show();
+            };
+
+            const submitRejection = async () => {
+                if (!rejection.value.reason) return alert('يجب ذكر سبب الرفض.');
+                await updateDoc(doc(db, 'designApprovals', rejection.value.id), { status: 'rejected', rejectionReason: rejection.value.reason, respondedAt: serverTimestamp() });
+                alert(`يُرفض تنفيذ الطلب رقم [${rejection.value.referenceNumber}]`);
+                rejectionModal.hide();
+            };
+
+            const logout = () => signOut(auth).then(() => window.location.href = 'login.html');
+
+            const formatTimestamp = (ts) => {
+                if (!ts?.toDate) return '—';
+                return ts.toDate().toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' });
+            };
+
+            onMounted(() => {
+                rejectionModal = new bootstrap.Modal(document.getElementById('rejectionModal'));
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userEmail.value = user.email;
+                        fetchDesigns(user.email);
+                    } else {
+                        window.location.href = 'login.html';
+                    }
+                });
+            });
+
+            return { loading, error, userEmail, pendingDesigns, historyDesigns, rejection, approveDesign, openRejectionModal, submitRejection, logout, formatTimestamp };
+        }
+    }).mount('#app');
+</script>
+</body>
+</html>
