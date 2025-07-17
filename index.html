@@ -41,14 +41,13 @@
         .form-wrapper, #confirmation-view {
             width: 100%;
             max-width: 750px;
-            position: relative; /* تمت الإضافة هنا */
+            position: relative; 
         }
         
-        /* --- START: Login Button Styles --- */
         .login-button-container {
             position: absolute;
             top: 25px;
-            left: 25px; /* تم التعديل ليناسب الهوامش الصغيرة */
+            left: 25px;
             z-index: 10;
         }
 
@@ -77,8 +76,7 @@
         .login-btn i {
             font-size: 1.1rem;
         }
-        /* --- END: Login Button Styles --- */
-
+        
         .glass-form {
             background: var(--input-bg);
             backdrop-filter: blur(25px);
@@ -277,7 +275,7 @@
             }
             .form-title {
                 font-size: 1.8rem;
-                margin-top: 45px; /* إضافة مسافة لكي لا يتداخل العنوان مع زر تسجيل الدخول */
+                margin-top: 45px;
             }
         }
     </style>
@@ -327,11 +325,11 @@
             <div class="options-group">
                 <span class="options-group-label">المقاس الخارجي بالسنتيمتر</span>
                 <div class="dimensions-grid">
-                    <input class="form-input" type="number" name="length" placeholder="طول" min="0" required>
-                    <input class="form-input" type="number" name="width" placeholder="عرض" min="0" required>
-                    <input class="form-input" type="number" name="height" placeholder="ارتفاع" min="0">
+                    <input class="form-input" type="text" name="length" placeholder="طول" required>
+                    <input class="form-input" type="text" name="width" placeholder="عرض" required>
+                    <input class="form-input" type="text" name="height" placeholder="ارتفاع">
                 </div>
-            </div>
+                </div>
             
             <div class="options-group">
                 <span class="options-group-label">الفورمة</span>
@@ -418,7 +416,6 @@
             } catch (error) {
                 console.error("Error fetching last order code: ", error);
                 orderCodeInput.value = 'خطأ في جلب الكود';
-                // يمكنك عرض رسالة خطأ للمستخدم هنا إذا أردت
             }
         };
 
@@ -451,12 +448,12 @@
             try {
                 // إرسال البيانات إلى Firestore
                 await addDoc(collection(db, "designRequests"), {
-                    orderCode, // إضافة كود الطلب
+                    orderCode, 
                     delegateName, 
                     productName, 
                     clientName, 
                     printType,
-                    dieCutType, // إضافة الفورمة
+                    dieCutType,
                     dimensions: { length, width, height },
                     details, 
                     isRead: false, 
@@ -497,7 +494,6 @@
         // 8. جلب أول كود عند تحميل الصفحة لأول مرة
         document.addEventListener('DOMContentLoaded', setNextOrderCode);
         
-        // --- END: تعديلات جافاسكريبت رئيسية ---
     </script>
 </body>
 </html>
