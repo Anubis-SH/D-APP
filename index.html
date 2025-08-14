@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام طلبات التصميم</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color-start: #667eea;
+            --primary-color-end: #764ba2;
+            --text-color: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color-start) 0%, var(--primary-color-end) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            color: var(--text-color);
+        }
+        .welcome-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        .welcome-title {
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 2.8rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .login-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 35px;
+            background: var(--text-color);
+            color: var(--primary-color-end);
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 768px) {
+            .welcome-title { font-size: 2.2rem; }
+            .welcome-subtitle { font-size: 1rem; }
+            .login-btn { padding: 12px 25px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-container">
+        <h1 class="welcome-title">نظام طلبات التصميم</h1>
+        <p class="welcome-subtitle">يرجى تسجيل الدخول لبدء تقديم طلبات التصميم ومتابعتها.</p>
+        <a href="login.html" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span>تسجيل الدخول</span>
+        </a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCRg-Et1SfnILZZp7rl1omjBF067O8n2Is",
+            authDomain: "design-requests-app.firebaseapp.com",
+            projectId: "design-requests-app",
+            storageBucket: "design-requests-app.appspot.com",
+            messagingSenderId: "465684228323",
+            appId: "1:465684228323:web:b3871e93b027ed4a997dd6",
+            measurementId: "G-WS8RNQCYCT"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // إذا كان المستخدم مسجل دخوله بالفعل، انقله مباشرة إلى لوحة التحكم
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = 'client-dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
