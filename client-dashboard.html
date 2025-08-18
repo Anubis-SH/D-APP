@@ -23,129 +23,54 @@
             --primary-gradient-end: #764ba2;
         }
 
-        body {  
-            font-family: 'Tajawal', sans-serif;  
-            background-color: var(--light-gray);
-            color: var(--text-color);
-        }
-
-        .navbar {
-            background-color: #fff !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-bottom: 1px solid var(--border-color);
-        }
-        .navbar-brand {
-            color: var(--dark-gray) !important;
-            font-weight: 800;
-        }
-        #user-display-name {
-            color: var(--primary-color) !important;
-            font-weight: 700;
-        }
-        .btn-logout {
-            border: 1px solid var(--danger-color);
-            color: var(--danger-color);
-        }
-        .btn-logout:hover {
-            background-color: var(--danger-color);
-            color: #fff;
-        }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--light-gray); color: var(--text-color); }
+        .navbar { background-color: #fff !important; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color); }
+        .navbar-brand { color: var(--dark-gray) !important; font-weight: 800; }
+        #user-display-name { color: var(--primary-color) !important; font-weight: 700; }
+        .btn-logout { border: 1px solid var(--danger-color); color: var(--danger-color); }
+        .btn-logout:hover { background-color: var(--danger-color); color: #fff; }
         
-        /* Styles for New Request Form */
-        .form-view {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-            background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
-        }
-        .glass-form {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            color: #fff;
-            max-width: 800px;
-            margin: auto;
-        }
+        .form-view { padding-top: 2rem; padding-bottom: 2rem; background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%); }
+        .glass-form { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); color: #fff; max-width: 800px; margin: auto; }
         .form-title { text-align: center; font-weight: 700; margin-bottom: 35px; font-size: 2.2rem; }
-        .form-input, .form-textarea {
-            width: 100%; padding: 15px 20px; background: rgba(255,255,255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: #fff;
-            font-family: 'Tajawal', sans-serif;
-        }
+        .form-input, .form-textarea { width: 100%; padding: 15px 20px; background: rgba(255,255,255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: #fff; font-family: 'Tajawal', sans-serif; }
         .form-input:disabled { background: rgba(255, 255, 255, 0.1); cursor: not-allowed; }
         .form-input::placeholder, .form-textarea::placeholder { color: rgba(255, 255, 255, 0.7); }
         .form-input:focus, .form-textarea:focus { outline: none; border-color: rgba(255, 255, 255, 0.8); background: rgba(255,255,255, 0.2); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .form-row-tri { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .options-group { margin-bottom: 25px; }
         .options-group-label { display: block; font-weight: 500; margin-bottom: 15px; }
         .radio-buttons { display: flex; gap: 15px; }
-        .radio-buttons label { flex: 1; padding: 14px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; cursor: pointer; text-align: center; }
+        .radio-buttons label { flex: 1; padding: 14px; background: rgba(255,255,255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; cursor: pointer; text-align: center; transition: all 0.3s ease; }
         .radio-buttons input[type="radio"] { display: none; }
         .radio-buttons input[type="radio"]:checked + label { background: #fff; color: var(--primary-gradient-end); border-color: #fff; }
-        .submit-btn {
-            width: 100%; padding: 16px; background: #fff; color: var(--primary-gradient-end);
-            border: none; border-radius: 10px; font-size: 1.2rem; font-weight: 700; cursor: pointer; margin-top: 15px;
-        }
+        .submit-btn { width: 100%; padding: 16px; background: #fff; color: var(--primary-gradient-end); border: none; border-radius: 10px; font-size: 1.2rem; font-weight: 700; cursor: pointer; margin-top: 15px; }
 
-        /* Styles for Request History & Approvals */
-        .request-card {
-            background-color: #fff; border-radius: 12px; border: 1px solid var(--border-color);
-            padding: 1.5rem; margin-bottom: 1.5rem; transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
+        .request-card { background-color: #fff; border-radius: 12px; border: 1px solid var(--border-color); padding: 1.5rem; margin-bottom: 1.5rem; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .request-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        .card-header-section { display: flex; justify-content: space-between; align-items: center; }
         .ref-code { font-size: 1.25rem; font-weight: 700; color: var(--primary-color); }
         .status-badge { font-weight: 500; padding: 0.3rem 0.8rem; border-radius: 50px; }
-        .status-new { background-color: #cfe2ff; color: #0a58ca; }
-        .status-in-progress { background-color: #fff3cd; color: #664d03; }
-        .status-completed { background-color: #d1e7dd; color: #0f5132; }
-        .status-modification { background-color: #f8d7da; color: #58151c; }
+        .status-new { background-color: #ffc107; color: #000; }
+        .status-in-progress { background-color: #0dcaf0; color: #000; }
+        .status-completed { background-color: #198754; color: #fff; }
+        .status-modification { background-color: #dc3545; color: #fff; }
 
-        /* --- New styles for Segmented Control Nav --- */
-        .nav-wrapper {
-            text-align: center; /* To center the nav pills container */
-        }
-        .nav-pills {
-            display: inline-flex; /* Make pills sit together */
-            background-color: #e9ecef;
-            border-radius: 12px;
-            padding: 6px;
-            gap: 6px; /* Space between pills */
-        }
-        .nav-pills .nav-link {
-            color: var(--dark-gray);
-            font-weight: 600;
-            border-radius: 9px;
-            padding: 10px 20px;
-            transition: all 0.3s ease;
-            border: none;
-            background-color: transparent; /* Default state is transparent */
-        }
-        .nav-pills .nav-link.active {
-            background-color: #fff;
-            color: var(--primary-color) !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .nav-pills .nav-link:not(.active):hover {
-            color: var(--primary-color);
-        }
-
-        /* --- Remove old nav-tabs styling --- */
-        .nav-tabs .nav-link.active {
-            border-color: transparent;
-            border-bottom-width: 0;
-        }
+        .nav-wrapper { text-align: center; }
+        .nav-pills { display: inline-flex; background-color: #e9ecef; border-radius: 12px; padding: 6px; gap: 6px; }
+        .nav-pills .nav-link { color: var(--dark-gray); font-weight: 600; border-radius: 9px; padding: 10px 20px; transition: all 0.3s ease; border: none; background-color: transparent; }
+        .nav-pills .nav-link.active { background-color: #fff; color: var(--primary-color) !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .nav-pills .nav-link:not(.active):hover { color: var(--primary-color); }
+        
+        .log-entry { border-bottom: 1px dashed #eee; padding: 10px 0; }
+        .log-entry:last-child { border-bottom: none; }
+        .log-meta { font-size: 0.8rem; color: #6c757d; }
+        .log-content { font-weight: 500; }
+        .log-content.system { color: var(--primary-color); font-style: italic; }
 
         @media (max-width: 768px) {
-            .form-row { grid-template-columns: 1fr; }
+            .form-row, .form-row-tri { grid-template-columns: 1fr; }
             .radio-buttons { flex-direction: column; }
-            .nav-pills {
-                flex-direction: column; /* Stack tabs vertically on small screens */
-                width: 100%;
-            }
         }
     </style>
 </head>
@@ -156,9 +81,7 @@
             <a class="navbar-brand" href="#"><i class="fas fa-user-shield me-2"></i>لوحة التحكم</a>
             <div class="d-flex align-items-center">
                 <span class="navbar-text me-3 d-none d-sm-block">أهلاً بك, <span id="user-display-name">{{ userName }}</span></span>
-                <button class="btn btn-sm btn-logout" @click="logout">
-                    <i class="fas fa-sign-out-alt me-1"></i>خروج
-                </button>
+                <button class="btn btn-sm btn-logout" @click="logout"><i class="fas fa-sign-out-alt me-1"></i>خروج</button>
             </div>
         </div>
     </nav>
@@ -167,19 +90,10 @@
         <div class="nav-wrapper mb-4">
             <ul class="nav nav-pills" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="new-request-tab" data-bs-toggle="tab" data-bs-target="#new-request-pane" type="button" role="tab">
-                        <i class="fas fa-plus-circle me-1"></i> طلب جديد
-                    </button>
+                    <button class="nav-link active" id="new-request-tab" data-bs-toggle="tab" data-bs-target="#new-request-pane"><i class="fas fa-plus-circle me-1"></i> طلب جديد</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-pane" type="button" role="tab">
-                        <i class="fas fa-history me-1"></i> سجل طلباتي
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="approval-tab" data-bs-toggle="tab" data-bs-target="#approval-pane" type="button" role="tab">
-                        <i class="fas fa-check-double me-1"></i> طلبات للاعتماد
-                    </button>
+                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-pane"><i class="fas fa-history me-1"></i> سجل طلباتي</button>
                 </li>
             </ul>
         </div>
@@ -188,61 +102,25 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="new-request-pane" role="tabpanel">
             <div class="form-view">
-                <div class="form-wrapper">
-                    <form @submit.prevent="submitNewRequest" class="glass-form">
-                        <h2 class="form-title">طلب بدء تصميم</h2>
-                        <div class="form-row">
-                            <input class="form-input" type="text" :value="`كود الطلب: ${nextOrderCode}`" disabled>
-                            <input class="form-input" type="text" :value="`اسم المندوب: ${userName}`" disabled>
-                        </div>
-                        <div class="form-row">
-                            <input v-model="newRequest.productName" class="form-input" type="text" placeholder="اسم المنتج" required>
-                            <input v-model="newRequest.clientName" class="form-input" type="text" placeholder="اسم الشركة / العميل" required>
-                        </div>
-                        <div class="options-group">
-                            <span class="options-group-label">نوع الطباعة</span>
-                            <div class="radio-buttons">
-                                <input type="radio" id="print_type_1" value="فصل ألوان" v-model="newRequest.printType">
-                                <label for="print_type_1"><i class="fa-solid fa-palette"></i> فصل ألوان</label>
-                                <input type="radio" id="print_type_2" value="طباعة مائية" v-model="newRequest.printType">
-                                <label for="print_type_2"><i class="fa-solid fa-water"></i> طباعة مائية</label>
-                            </div>
-                        </div>
-                         <div class="options-group">
-                            <span class="options-group-label">الفورمة</span>
-                            <div class="radio-buttons">
-                                <input type="radio" id="die_cut_1" value="فورمة موجودة" v-model="newRequest.dieCutType">
-                                <label for="die_cut_1"><i class="fa-solid fa-check-double"></i> فورمة موجودة</label>
-                                <input type="radio" id="die_cut_2" value="فورمة جديدة" v-model="newRequest.dieCutType">
-                                <label for="die_cut_2"><i class="fa-solid fa-plus"></i> فورمة جديدة</label>
-                            </div>
-                        </div>
-                        <div class="options-group">
-                            <span class="options-group-label">المقاس الخارجي بالسنتيمتر</span>
-                            <div class="form-row">
-                                <input v-model="newRequest.dimensions.length" class="form-input" type="text" placeholder="طول" required>
-                                <input v-model="newRequest.dimensions.width" class="form-input" type="text" placeholder="عرض" required>
-                                <input v-model="newRequest.dimensions.height" class="form-input" type="text" placeholder="ارتفاع">
-                            </div>
-                        </div>
-                        <textarea v-model="newRequest.details" class="form-textarea" placeholder="تفاصيل اضافية..."></textarea>
-                        <button type="submit" class="submit-btn" :disabled="isSubmitting">
-                            <span v-if="isSubmitting" class="spinner-border spinner-border-sm"></span>
-                            <span v-else>إرسال الطلب</span>
-                        </button>
-                    </form>
-                </div>
+                <form @submit.prevent="submitNewRequest" class="glass-form">
+                    <h2 class="form-title">طلب بدء تصميم</h2>
+                    <div class="form-row"><input class="form-input" :value="`كود الطلب: ${nextOrderCode}`" disabled><input class="form-input" :value="`اسم المندوب: ${userName}`" disabled></div>
+                    <div class="form-row"><input v-model="newRequest.productName" class="form-input" type="text" placeholder="اسم المنتج" required><input v-model="newRequest.clientName" class="form-input" type="text" placeholder="اسم الشركة / العميل" required></div>
+                    <div class="options-group"><span class="options-group-label">نوع الطباعة</span><div class="radio-buttons"><input type="radio" id="print_type_1" value="فصل ألوان" v-model="newRequest.printType" checked><label for="print_type_1"><i class="fa-solid fa-palette"></i> فصل ألوان</label><input type="radio" id="print_type_2" value="طباعة مائية" v-model="newRequest.printType"><label for="print_type_2"><i class="fa-solid fa-water"></i> طباعة مائية</label></div></div>
+                     <div class="options-group"><span class="options-group-label">الفورمة</span><div class="radio-buttons"><input type="radio" id="die_cut_1" value="فورمة موجودة" v-model="newRequest.dieCutType" checked><label for="die_cut_1"><i class="fa-solid fa-check-double"></i> فورمة موجودة</label><input type="radio" id="die_cut_2" value="فورمة جديدة" v-model="newRequest.dieCutType"><label for="die_cut_2"><i class="fa-solid fa-plus"></i> فورمة جديدة</label></div></div>
+                    <div class="options-group"><span class="options-group-label">المقاس الخارجي بالسنتيمتر</span><div class="form-row-tri"><input v-model="newRequest.dimensions.length" class="form-input" type="text" placeholder="طول" required><input v-model="newRequest.dimensions.width" class="form-input" type="text" placeholder="عرض" required><input v-model="newRequest.dimensions.height" class="form-input" type="text" placeholder="ارتفاع"></div></div>
+                    <textarea v-model="newRequest.details" class="form-textarea" placeholder="تفاصيل اضافية..."></textarea>
+                    <button type="submit" class="submit-btn" :disabled="isSubmitting"><span v-if="isSubmitting" class="spinner-border spinner-border-sm"></span><span v-else>إرسال الطلب</span></button>
+                </form>
             </div>
         </div>
 
         <div class="tab-pane fade" id="history-pane" role="tabpanel">
             <main class="container py-4">
                 <div v-if="loadingMyRequests" class="text-center"><div class="spinner-border"></div></div>
-                <div v-else-if="myRequests.length === 0" class="text-center p-5 bg-white rounded-3">
-                    <p class="text-muted">لم تقم بتقديم أي طلبات بعد.</p>
-                </div>
-                <div v-else v-for="req in myRequests" :key="req.id" class="request-card">
-                    <div class="card-header-section">
+                <div v-else-if="allMyRequests.length === 0" class="text-center p-5 bg-white rounded-3"><p class="text-muted">لم تقم بتقديم أي طلبات بعد.</p></div>
+                <div v-else v-for="req in allMyRequests" :key="req.id" class="request-card">
+                    <div class="d-flex justify-content-between align-items-center">
                         <span class="ref-code">#{{ req.orderCode }}</span>
                         <span class="status-badge" :class="getRequestStatusClass(req.status)">{{ req.status || 'جديد' }}</span>
                     </div>
@@ -251,113 +129,61 @@
                         <div class="col-md-4"><strong>العميل:</strong> {{ req.clientName }}</div>
                         <div class="col-md-4"><strong>التاريخ:</strong> {{ formatTimestamp(req.timestamp) }}</div>
                     </div>
-                    <div class="d-flex gap-2 mt-3">
-                         <button class="btn btn-primary" @click="viewRequestDetails(req)">
-                            <i class="fas fa-eye me-1"></i> عرض التفاصيل والتعديلات
-                        </button>
-                        <button class="btn btn-outline-danger" @click="openModificationRequestModal(req)">
-                            <i class="fas fa-edit me-1"></i> طلب تعديل
-                        </button>
-                    </div>
+                    <div class="mt-3"><button class="btn btn-primary" @click="viewRequestDetails(req)"><i class="fas fa-eye me-1"></i> عرض السجل والمحادثة</button></div>
                 </div>
-            </main>
-        </div>
-
-        <div class="tab-pane fade" id="approval-pane" role="tabpanel">
-            <main class="container py-4">
-                 <div v-if="loadingApprovals" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
-                 <div v-else>
-                     <h4 class="mb-3 fw-bold">طلبات قيد المراجعة ({{ pendingApprovals.length }})</h4>
-                     <div v-if="pendingApprovals.length === 0" class="text-center p-5 bg-white rounded-3"><p class="text-muted">لا توجد طلبات جديدة.</p></div>
-                     <div v-else v-for="item in pendingApprovals" :key="item.id" class="request-card">
-                         <div class="card-header-section">
-                             <span class="ref-code">#{{ item.referenceNumber }}</span>
-                             <span class="status-badge status-in-progress"><i class="fas fa-hourglass-half"></i> قيد المراجعة</span>
-                         </div>
-                         <div class="info-item mt-3"><i class="fas fa-link me-2"></i> <a :href="item.googleDriveLink" target="_blank">عرض رابط التصميم</a></div>
-                         <div class="d-flex gap-2 mt-3">
-                             <button class="btn btn-outline-danger" @click="rejectDesign(item.id, item.referenceNumber)">رفض</button>
-                             <button class="btn btn-success" @click="approveDesign(item.id, item.referenceNumber)">موافقة</button>
-                         </div>
-                     </div>
-                     <hr class="my-5">
-                     <h4 class="mb-3 fw-bold">سجل الاعتمادات السابقة</h4>
-                      <div v-if="historyApprovals.length === 0" class="text-center p-5 bg-white rounded-3"><p class="text-muted">لا يوجد سجل.</p></div>
-                     <div v-else v-for="item in historyApprovals" :key="item.id" class="request-card">
-                         <div class="card-header-section">
-                              <span class="ref-code">#{{ item.referenceNumber }}</span>
-                              <span v-if="item.status === 'approved'" class="status-badge status-completed"><i class="fas fa-check-circle"></i> تمت الموافقة</span>
-                              <span v-if="item.status === 'rejected'" class="status-badge status-modification"><i class="fas fa-times-circle"></i> تم الرفض</span>
-                         </div>
-                         <div class="mt-2"><i class="fas fa-calendar-check me-2"></i> تاريخ الرد: {{ formatTimestamp(item.respondedAt) }}</div>
-                         <div v-if="item.rejectionReason" class="mt-2"><i class="fas fa-comment-dots me-2"></i> سبب الرفض: {{ item.rejectionReason }}</div>
-                     </div>
-                 </div>
             </main>
         </div>
     </div>
 
     <div class="modal fade" id="requestDetailsModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content" v-if="selectedRequest">
-                <div class="modal-header">
-                    <h5 class="modal-title">تفاصيل الطلب #{{ selectedRequest.orderCode }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+                <div class="modal-header"><h5 class="modal-title">سجل الطلب #{{ selectedRequest.orderCode }}</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
-                    <h6><i class="fas fa-info-circle text-primary me-2"></i>البيانات الأساسية</h6>
-                    <hr>
-                    <div class="row g-3">
-                        <div class="col-md-6"><strong>المنتج:</strong> {{ selectedRequest.productName }}</div>
-                        <div class="col-md-6"><strong>العميل:</strong> {{ selectedRequest.clientName }}</div>
-                        <div class="col-md-6"><strong>نوع الطباعة:</strong> {{ selectedRequest.printType }}</div>
-                        <div class="col-md-6"><strong>الفورمة:</strong> {{ selectedRequest.dieCutType }}</div>
-                        <div class="col-md-12"><strong>المقاسات:</strong> {{ selectedRequest.dimensions.length }} x {{ selectedRequest.dimensions.width }} x {{ selectedRequest.dimensions.height || 'N/A' }} سم</div>
-                        <div class="col-12"><strong>تفاصيل إضافية:</strong><p class="p-2 bg-light rounded border mt-1">{{ selectedRequest.details || 'لا يوجد' }}</p></div>
+                    <div v-if="loadingLog" class="text-center p-5"><div class="spinner-border"></div></div>
+                    <div v-else-if="communicationLog.length === 0" class="text-center p-5 text-muted">لا يوجد سجل بعد.</div>
+                    <div v-else v-for="log in communicationLog" class="log-entry">
+                        <div v-if="log.type === 'message' || log.type === 'design_link'">
+                            <p class="log-content mb-1">
+                                <strong>{{ log.sender }}:</strong> {{ log.content }}
+                                <a v-if="log.type === 'design_link' && log.designLink" :href="log.designLink" target="_blank" class="btn btn-sm btn-primary ms-2"><i class="fa-solid fa-eye me-1"></i> عرض التصميم</a>
+                            </p>
+                            <div class="log-meta">{{ formatTimestamp(log.timestamp, true) }}</div>
+                        </div>
+                         <div v-if="log.type === 'status_change'" class="text-center"><p class="log-content system mb-1"><i class="fas fa-flag"></i> تم تغيير الحالة إلى: <span class="badge" :class="getRequestStatusClass(log.content)">{{ log.content }}</span></p><div class="log-meta">{{ formatTimestamp(log.timestamp, true) }}</div></div>
+                        <div v-if="log.type === 'modification_request'"><p class="log-content text-danger mb-1"><i class="fas fa-edit"></i> <strong>طلب تعديل:</strong> {{ log.content }}</p><div class="log-meta">بواسطة: {{ log.sender }} - {{ formatTimestamp(log.timestamp, true) }}</div></div>
+                        <div v-if="log.type === 'delegate_approval'"><p class="log-content text-success text-center mb-1"><i class="fas fa-check-circle"></i> تم اعتماد التصميم من قبل المندوب.</p><div class="log-meta text-center">{{ formatTimestamp(log.timestamp, true) }}</div></div>
+                        <div v-if="log.type === 'external_approval'"><p class="log-content text-success text-center mb-1"><i class="fas fa-user-check"></i> تم اعتماد التصميم بواسطة <strong>{{ log.sender }}</strong>.</p><div class="log-meta text-center">{{ formatTimestamp(log.timestamp, true) }}</div></div>
+                        <div v-if="log.type === 'external_share'"><p class="log-content system mb-1"><i class="fas fa-share-alt"></i> تمت مشاركة التصميم معك للاعتماد.</p><a :href="log.content.designLink" target="_blank">رابط التصميم</a><p v-if="log.content.notes" class="mt-1 fst-italic">"{{ log.content.notes }}"</p><div class="log-meta">{{ formatTimestamp(log.timestamp, true) }}</div></div>
                     </div>
-                    
-                    <h6 class="mt-4"><i class="fas fa-history text-primary me-2"></i>سجل التعديلات</h6>
-                    <hr>
-                     <div v-if="loadingModifications"><div class="spinner-border spinner-border-sm"></div></div>
-                    <div v-else-if="modificationsHistory.length === 0"><p class="text-muted">لا توجد طلبات تعديل لهذا الطلب.</p></div>
-                    <ul v-else class="list-group">
-                        <li v-for="mod in modificationsHistory" :key="mod.id" class="list-group-item">
-                           <p class="mb-1">{{ mod.notes }}</p>
-                           <small class="text-muted">{{ formatTimestamp(mod.timestamp, true) }}</small>
-                        </li>
-                    </ul>
                 </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="modal fade" id="modificationRequestModal" tabindex="-1">
-         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">طلب تعديل على #{{ selectedRequest?.orderCode }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <label for="modNotes" class="form-label">يرجى كتابة التعديلات المطلوبة بوضوح:</label>
-                    <textarea id="modNotes" v-model="modificationNotes" class="form-control" rows="5"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="button" class="btn btn-danger" @click="submitModificationRequest">إرسال طلب التعديل</button>
+                <div class="modal-footer" v-if="selectedRequest.status !== 'مكتمل' && canInteract">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end w-100">
+                        <button class="btn btn-outline-danger" @click="openModificationRequestModal(selectedRequest)"><i class="fas fa-edit me-1"></i> طلب تعديل</button>
+                        <button class="btn btn-success" @click="approveDesign"><i class="fas fa-check-double me-1"></i> اعتماد نهائي للتصميم</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="modal fade" id="modificationRequestModal" tabindex="-1">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">طلب تعديل على #{{ selectedRequest?.orderCode }}</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body"><label for="modNotes" class="form-label">يرجى كتابة التعديلات المطلوبة بوضوح:</label><textarea id="modNotes" v-model="modificationNotes" class="form-control" rows="5"></textarea></div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button><button type="button" class="btn btn-danger" @click="submitModificationRequest">إرسال طلب التعديل</button></div>
+            </div>
+        </div>
     </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, query, where, onSnapshot, doc, updateDoc, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, query, where, onSnapshot, doc, updateDoc, orderBy, limit, getDocs, writeBatch, collectionGroup, getDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCRg-Et1SfnILZZp7rl1omjBF067O8n2Is",
@@ -371,41 +197,48 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const { createApp, ref, onMounted, computed, reactive } = Vue;
+    const { createApp, ref, onMounted, reactive, computed } = Vue;
 
     createApp({
         setup() {
-            // --- User & Auth Refs ---
             const currentUser = ref(null);
             const userName = ref('');
-            const userEmail = ref('');
             const isSubmitting = ref(false);
-
-            // --- New Request Refs ---
             const nextOrderCode = ref('...');
-            const newRequest = reactive({
-                productName: '', clientName: '', printType: 'فصل ألوان', dieCutType: 'فورمة موجودة',
-                dimensions: { length: '', width: '', height: '' },
-                details: ''
-            });
-
-            // --- My Requests History Refs ---
+            const newRequest = reactive({ productName: '', clientName: '', printType: 'فصل ألوان', dieCutType: 'فورمة موجودة', dimensions: { length: '', width: '', height: '' }, details: '' });
             const myRequests = ref([]);
+            const externalRequests = ref([]);
             const loadingMyRequests = ref(true);
             const selectedRequest = ref(null);
-            const modificationsHistory = ref([]);
-            const loadingModifications = ref(false);
+            const communicationLog = ref([]);
+            const loadingLog = ref(false);
             const modificationNotes = ref('');
+            
+            const userRoleForSelectedRequest = ref(null);
+            const externalApprovalDoc = ref(null);
+
             let requestDetailsModal = null;
             let modificationRequestModal = null;
-            
-            // --- Approvals Refs ---
-            const allApprovals = ref([]);
-            const loadingApprovals = ref(true);
-            const pendingApprovals = computed(() => allApprovals.value.filter(d => d.status === 'pending'));
-            const historyApprovals = computed(() => allApprovals.value.filter(d => d.status !== 'pending'));
+            let logUnsubscribe = null;
 
-            // --- Fetching Logic ---
+            const allMyRequests = computed(() => {
+                const combined = [...myRequests.value, ...externalRequests.value];
+                const unique = Array.from(new Set(combined.map(a => a.id)))
+                    .map(id => combined.find(a => a.id === id));
+                return unique.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
+            });
+
+            const canInteract = computed(() => {
+                if (!selectedRequest.value || !currentUser.value) return false;
+                if (userRoleForSelectedRequest.value === 'delegate') {
+                    return !selectedRequest.value.isDelegateApproved;
+                }
+                if (userRoleForSelectedRequest.value === 'external') {
+                    return externalApprovalDoc.value && externalApprovalDoc.value.status === 'pending';
+                }
+                return false;
+            });
+            
             const fetchNextOrderCode = async () => {
                 const q = query(collection(db, "designRequests"), orderBy("orderCode", "desc"), limit(1));
                 const querySnapshot = await getDocs(q);
@@ -424,55 +257,93 @@
                 });
             };
 
-            const fetchApprovals = (email) => {
-                const q = query(collection(db, 'designApprovals'), where('clientEmail', '==', email), orderBy('submittedAt', 'desc'));
+            // ### تعديل ###: تم تعديل هذه الدالة بالكامل لتستخدم الاستعلام الصحيح
+            const fetchExternalRequests = (userEmail) => {
+                if (!userEmail) return;
+                // Query the 'externalApprovals' subcollections across all documents
+                const q = query(collectionGroup(db, 'externalApprovals'), where('personEmail', '==', userEmail));
+                
                 onSnapshot(q, (snapshot) => {
-                    allApprovals.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    loadingApprovals.value = false;
+                    if (snapshot.empty) {
+                        externalRequests.value = [];
+                        return;
+                    }
+                    // For each approval doc found, get its parent (the main request doc)
+                    const promises = snapshot.docs.map(doc => getDoc(doc.ref.parent.parent));
+                    Promise.all(promises).then(results => {
+                        externalRequests.value = results
+                            .filter(res => res.exists())
+                            .map(d => ({ id: d.id, ...d.data() }));
+                    });
+                }, (error) => {
+                    console.error("Error fetching external requests: ", error);
                 });
             };
 
-            const fetchModifications = async (reqId) => {
-                loadingModifications.value = true;
-                const modRef = collection(db, `designRequests/${reqId}/modifications`);
-                const q = query(modRef, orderBy("timestamp", "desc"));
-                onSnapshot(q, (snapshot) => {
-                    modificationsHistory.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-                    loadingModifications.value = false;
+            const fetchCommunicationLog = (reqId) => {
+                if (logUnsubscribe) logUnsubscribe();
+                loadingLog.value = true;
+                const logRef = collection(db, `designRequests/${reqId}/communicationLog`);
+                const q = query(logRef, orderBy("timestamp", "asc"));
+                logUnsubscribe = onSnapshot(q, (snapshot) => {
+                    communicationLog.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    loadingLog.value = false;
                 });
             };
 
-            // --- Methods ---
             const submitNewRequest = async () => {
                 if (!currentUser.value) return;
                 isSubmitting.value = true;
                 try {
                     await addDoc(collection(db, "designRequests"), {
-                        ...newRequest,
-                        orderCode: nextOrderCode.value,
-                        delegateName: userName.value,
-                        userId: currentUser.value.uid,
-                        userEmail: userEmail.value,
-                        status: 'جديد',
-                        isRead: false,
+                        ...newRequest, orderCode: nextOrderCode.value, delegateName: userName.value,
+                        userId: currentUser.value.uid, status: 'جديد', isDelegateApproved: false,
                         timestamp: serverTimestamp()
                     });
-                    Swal.fire('تم الإرسال!', 'تم إرسال طلبك بنجاح.', 'success');
-                    Object.assign(newRequest, { productName: '', clientName: '', printType: 'فصل ألوان', dieCutType: 'فورمة موجودة', dimensions: { length: '', width: '', height: '' }, details: '' });
-                    await fetchNextOrderCode();
-                    bootstrap.Tab.getOrCreateInstance(document.querySelector('#history-tab')).show();
+                    
+                    Swal.fire({ title: 'تم الإرسال!', text: 'تم إرسال طلبك بنجاح.', icon: 'success', timer: 2000, showConfirmButton: false })
+                        .then(async () => {
+                            Object.assign(newRequest, { productName: '', clientName: '', printType: 'فصل ألوان', dieCutType: 'فورمة موجودة', dimensions: { length: '', width: '', height: '' }, details: '' });
+                            await fetchNextOrderCode();
+                            bootstrap.Tab.getOrCreateInstance(document.querySelector('#history-tab')).show();
+                        });
+
                 } catch (e) {
-                    console.error(e);
+                    console.error("Error submitting request:", e);
                     Swal.fire('خطأ!', 'حدث خطأ أثناء إرسال الطلب.', 'error');
                 } finally {
                     isSubmitting.value = false;
                 }
             };
             
-            const viewRequestDetails = (req) => {
+            // ### تعديل ###: تم تعديل هذه الدالة بالكامل لتجد مستند الاعتماد
+            const viewRequestDetails = async (req) => {
                 selectedRequest.value = req;
-                modificationsHistory.value = [];
-                fetchModifications(req.id);
+                communicationLog.value = [];
+                userRoleForSelectedRequest.value = null;
+                externalApprovalDoc.value = null;
+
+                if (!currentUser.value) return;
+
+                if (req.userId === currentUser.value.uid) {
+                    userRoleForSelectedRequest.value = 'delegate';
+                } else {
+                    userRoleForSelectedRequest.value = 'external';
+                    // Query to find the specific approval document for the current user
+                    const approversColRef = collection(db, `designRequests/${req.id}/externalApprovals`);
+                    const q = query(approversColRef, where("personEmail", "==", currentUser.value.email), limit(1));
+                    const querySnapshot = await getDocs(q);
+
+                    if (!querySnapshot.empty) {
+                        const docSnap = querySnapshot.docs[0];
+                        externalApprovalDoc.value = { id: docSnap.id, ...docSnap.data() };
+                    } else {
+                        console.error("Could not find external approval document for this user.");
+                        userRoleForSelectedRequest.value = null;
+                    }
+                }
+
+                fetchCommunicationLog(req.id);
                 requestDetailsModal.show();
             };
 
@@ -481,115 +352,80 @@
                 modificationNotes.value = '';
                 modificationRequestModal.show();
             };
-            
+
             const submitModificationRequest = async () => {
                 if (!modificationNotes.value.trim() || !selectedRequest.value) return;
-                const modRef = collection(db, `designRequests/${selectedRequest.value.id}/modifications`);
+                
+                const batch = writeBatch(db);
+                const reqDocRef = doc(db, "designRequests", selectedRequest.value.id);
+                batch.update(reqDocRef, { status: 'طلب تعديل' });
+
+                const logRef = doc(collection(db, `designRequests/${selectedRequest.value.id}/communicationLog`));
+                batch.set(logRef, {
+                    type: 'modification_request', content: modificationNotes.value,
+                    sender: userName.value, timestamp: serverTimestamp()
+                });
+                
                 try {
-                    await addDoc(modRef, {
-                        notes: modificationNotes.value,
-                        requestedBy: userName.value,
-                        timestamp: serverTimestamp()
-                    });
-                    const mainDocRef = doc(db, 'designRequests', selectedRequest.value.id);
-                    await updateDoc(mainDocRef, {
-                       status: 'طلب تعديل' 
-                    });
-                    
+                    await batch.commit();
                     modificationRequestModal.hide();
                     Swal.fire('تم!', 'تم إرسال طلب التعديل بنجاح.', 'success');
                 } catch (e) {
-                     console.error(e);
-                     Swal.fire('خطأ!', 'لم نتمكن من إرسال طلب التعديل.', 'error');
+                    Swal.fire('خطأ!', 'لم نتمكن من إرسال طلب التعديل.', 'error');
+                }
+            };
+            
+            // ### تعديل ###: تم تعديل هذه الدالة لتستخدم المعرف الصحيح للمستند
+            const approveDesign = async () => {
+                if (!selectedRequest.value) return;
+                const result = await Swal.fire({
+                    title: 'هل أنت متأكد من اعتماد التصميم؟',
+                    text: "هذا الإجراء نهائي بالنسبة لك.",
+                    icon: 'question', showCancelButton: true, confirmButtonText: 'نعم، موافق!',
+                    cancelButtonText: 'إلغاء', confirmButtonColor: '#198754',
+                });
+
+                if (result.isConfirmed) {
+                    const batch = writeBatch(db);
+                    const reqId = selectedRequest.value.id;
+                    
+                    if (userRoleForSelectedRequest.value === 'delegate') {
+                        const reqDocRef = doc(db, "designRequests", reqId);
+                        batch.update(reqDocRef, { isDelegateApproved: true });
+                        
+                        const logRef = doc(collection(db, `designRequests/${reqId}/communicationLog`));
+                        batch.set(logRef, { type: 'delegate_approval', sender: userName.value, timestamp: serverTimestamp() });
+                        
+                        await batch.commit();
+                        selectedRequest.value.isDelegateApproved = true;
+                    } 
+                    else if (userRoleForSelectedRequest.value === 'external' && externalApprovalDoc.value) {
+                        // Use the auto-ID of the approval doc we found earlier
+                        const approvalDocRef = doc(db, `designRequests/${reqId}/externalApprovals`, externalApprovalDoc.value.id);
+                        batch.update(approvalDocRef, { status: 'approved' });
+                        
+                        const logRef = doc(collection(db, `designRequests/${reqId}/communicationLog`));
+                        batch.set(logRef, { type: 'external_approval', sender: userName.value, timestamp: serverTimestamp() });
+
+                        await batch.commit();
+                        externalApprovalDoc.value.status = 'approved';
+                    }
+                    
+                    Swal.fire('تم الاعتماد!', 'تم اعتماد التصميم بنجاح.', 'success');
                 }
             };
 
             const logout = () => signOut(auth).then(() => window.location.href = 'login.html');
-
             const formatTimestamp = (ts, withTime = false) => {
                 if (!ts?.toDate) return '—';
-                const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                if(withTime) {
-                    options.hour = '2-digit';
-                    options.minute = '2-digit';
-                }
-                return ts.toDate().toLocaleDateString('ar-EG', options);
+                const options = { day: 'numeric', month: 'long', year: 'numeric', hour: withTime ? '2-digit' : undefined, minute: withTime ? '2-digit' : undefined };
+                return new Date(ts.toDate()).toLocaleString('ar-EG', options);
             };
-            
-            const getRequestStatusClass = (status) => {
-                const statusMap = {
-                    'جديد': 'status-new',
-                    'قيد التنفيذ': 'status-in-progress',
-                    'مكتمل': 'status-completed',
-                    'طلب تعديل': 'status-modification'
-                };
-                return statusMap[status] || 'bg-secondary';
-            };
-            
-            // --- Approval methods ---
-            const approveDesign = async (id, refNum) => {
-                const result = await Swal.fire({
-                    title: `هل أنت متأكد من موافقتك على الطلب #${refNum}؟`,
-                    text: "لا يمكن التراجع عن هذا الإجراء!",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#198754',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'نعم، موافق!',
-                    cancelButtonText: 'إلغاء'
-                });
+            const getRequestStatusClass = (status) => ({
+                'جديد': 'status-new', 'قيد التنفيذ': 'status-in-progress',
+                'مكتمل': 'status-completed', 'طلب تعديل': 'status-modification'
+            }[status || 'جديد'] || 'bg-secondary');
 
-                if (result.isConfirmed) {
-                    const docRef = doc(db, 'designApprovals', id);
-                    try {
-                        await updateDoc(docRef, {
-                            status: 'approved',
-                            respondedAt: serverTimestamp()
-                        });
-                        Swal.fire('تمت الموافقة!', `تمت الموافقة بنجاح على الطلب #${refNum}.`, 'success');
-                    } catch (e) {
-                        console.error(e);
-                        Swal.fire('خطأ!', 'حدث خطأ أثناء تحديث الطلب.', 'error');
-                    }
-                }
-            };
-
-            const rejectDesign = async (id, refNum) => {
-                const { value: reason } = await Swal.fire({
-                    title: `سبب رفض الطلب #${refNum}`,
-                    input: 'textarea',
-                    inputPlaceholder: 'اكتب سبب الرفض هنا بوضوح...',
-                    inputAttributes: {
-                        'aria-label': 'اكتب سبب الرفض هنا'
-                    },
-                    showCancelButton: true,
-                    confirmButtonColor: '#dc3545',
-                    confirmButtonText: 'إرسال الرفض',
-                    cancelButtonText: 'إلغاء',
-                    inputValidator: (value) => {
-                        if (!value) {
-                            return 'يجب عليك كتابة سبب الرفض!'
-                        }
-                    }
-                });
-
-                if (reason) {
-                    const docRef = doc(db, 'designApprovals', id);
-                    try {
-                        await updateDoc(docRef, {
-                            status: 'rejected',
-                            rejectionReason: reason,
-                            respondedAt: serverTimestamp()
-                        });
-                        Swal.fire('تم الرفض!', `تم تسجيل رفض الطلب #${refNum}.`, 'info');
-                    } catch (e) {
-                        console.error(e);
-                        Swal.fire('خطأ!', 'حدث خطأ أثناء تحديث الطلب.', 'error');
-                    }
-                }
-            };
-
-            // --- Lifecycle ---
             onMounted(() => {
                 requestDetailsModal = new bootstrap.Modal('#requestDetailsModal');
                 modificationRequestModal = new bootstrap.Modal('#modificationRequestModal');
@@ -598,11 +434,9 @@
                     if (user) {
                         currentUser.value = user;
                         userName.value = user.displayName || user.email.split('@')[0];
-                        userEmail.value = user.email;
-                        
                         await fetchNextOrderCode();
                         fetchMyRequests(user.uid);
-                        fetchApprovals(user.email);
+                        fetchExternalRequests(user.email);
                     } else {
                         window.location.href = 'login.html';
                     }
@@ -610,11 +444,11 @@
             });
 
             return {
-                userName, userEmail, logout, formatTimestamp,
-                isSubmitting, newRequest, nextOrderCode, submitNewRequest,
+                userName, logout, formatTimestamp, isSubmitting, newRequest, nextOrderCode, submitNewRequest,
                 loadingMyRequests, myRequests, viewRequestDetails, openModificationRequestModal, getRequestStatusClass,
-                selectedRequest, loadingModifications, modificationsHistory, modificationNotes, submitModificationRequest,
-                loadingApprovals, pendingApprovals, historyApprovals, approveDesign, rejectDesign,
+                selectedRequest, loadingLog, communicationLog, approveDesign, modificationNotes, submitModificationRequest,
+                allMyRequests,
+                canInteract
             };
         }
     }).mount('#app');
