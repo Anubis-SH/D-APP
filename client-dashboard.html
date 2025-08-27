@@ -90,10 +90,13 @@
         <div class="nav-wrapper mb-4">
             <ul class="nav nav-pills" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="new-request-tab" data-bs-toggle="tab" data-bs-target="#new-request-pane"><i class="fas fa-plus-circle me-1"></i> طلب جديد</button>
+                    <button class="nav-link active" id="new-request-tab" data-bs-toggle="tab" data-bs-target="#new-request-pane" type="button" role="tab"><i class="fas fa-plus-circle me-1"></i> طلب جديد</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-pane"><i class="fas fa-history me-1"></i> سجل طلباتي</button>
+                    <button class="nav-link" id="current-requests-tab" data-bs-toggle="tab" data-bs-target="#current-requests-pane" type="button" role="tab"><i class="fas fa-tasks me-1"></i> الطلبات الحالية</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="completed-requests-tab" data-bs-toggle="tab" data-bs-target="#completed-requests-pane" type="button" role="tab"><i class="fas fa-archive me-1"></i> سجل الطلبات المكتملة</button>
                 </li>
             </ul>
         </div>
@@ -107,7 +110,7 @@
                     <div class="form-row"><input class="form-input" :value="`كود الطلب: ${nextOrderCode}`" disabled><input class="form-input" :value="`اسم المندوب: ${userName}`" disabled></div>
                     <div class="form-row"><input v-model="newRequest.productName" class="form-input" type="text" placeholder="اسم المنتج" required><input v-model="newRequest.clientName" class="form-input" type="text" placeholder="اسم الشركة / العميل" required></div>
                     <div class="options-group"><span class="options-group-label">نوع الطباعة</span><div class="radio-buttons"><input type="radio" id="print_type_1" value="فصل ألوان" v-model="newRequest.printType" checked><label for="print_type_1"><i class="fa-solid fa-palette"></i> فصل ألوان</label><input type="radio" id="print_type_2" value="طباعة مائية" v-model="newRequest.printType"><label for="print_type_2"><i class="fa-solid fa-water"></i> طباعة مائية</label></div></div>
-                     <div class="options-group"><span class="options-group-label">الفورمة</span><div class="radio-buttons"><input type="radio" id="die_cut_1" value="فورمة موجودة" v-model="newRequest.dieCutType" checked><label for="die_cut_1"><i class="fa-solid fa-check-double"></i> فورمة موجودة</label><input type="radio" id="die_cut_2" value="فورمة جديدة" v-model="newRequest.dieCutType"><label for="die_cut_2"><i class="fa-solid fa-plus"></i> فورمة جديدة</label></div></div>
+                    <div class="options-group"><span class="options-group-label">الفورمة</span><div class="radio-buttons"><input type="radio" id="die_cut_1" value="فورمة موجودة" v-model="newRequest.dieCutType" checked><label for="die_cut_1"><i class="fa-solid fa-check-double"></i> فورمة موجودة</label><input type="radio" id="die_cut_2" value="فورمة جديدة" v-model="newRequest.dieCutType"><label for="die_cut_2"><i class="fa-solid fa-plus"></i> فورمة جديدة</label></div></div>
                     <div class="options-group"><span class="options-group-label">المقاس الخارجي بالسنتيمتر</span><div class="form-row-tri"><input v-model="newRequest.dimensions.length" class="form-input" type="text" placeholder="طول" required><input v-model="newRequest.dimensions.width" class="form-input" type="text" placeholder="عرض" required><input v-model="newRequest.dimensions.height" class="form-input" type="text" placeholder="ارتفاع"></div></div>
                     <textarea v-model="newRequest.details" class="form-textarea" placeholder="تفاصيل اضافية..."></textarea>
                     <button type="submit" class="submit-btn" :disabled="isSubmitting"><span v-if="isSubmitting" class="spinner-border spinner-border-sm"></span><span v-else>إرسال الطلب</span></button>
@@ -115,24 +118,59 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="history-pane" role="tabpanel">
+        <div class="tab-pane fade" id="current-requests-pane" role="tabpanel">
             <main class="container py-4">
                 <div v-if="loadingMyRequests" class="text-center"><div class="spinner-border"></div></div>
-                <div v-else-if="allMyRequests.length === 0" class="text-center p-5 bg-white rounded-3"><p class="text-muted">لم تقم بتقديم أي طلبات بعد.</p></div>
-                <div v-else v-for="req in allMyRequests" :key="req.id" class="request-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="ref-code">#{{ req.orderCode }}</span>
-                        <span class="status-badge" :class="getRequestStatusClass(req.status)">{{ req.status || 'جديد' }}</span>
+                <div v-else-if="currentRequests.length === 0" class="text-center p-5 bg-white rounded-3"><p class="text-muted">لا يوجد طلبات حالية.</p></div>
+                <div v-else>
+                    <div v-for="req in currentRequests" :key="req.id" class="request-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="ref-code">#{{ req.orderCode }}</span>
+                            <span class="status-badge" :class="getRequestStatusClass(req.status)">{{ req.status || 'جديد' }}</span>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4"><strong>المنتج:</strong> {{ req.productName }}</div>
+                            <div class="col-md-4"><strong>العميل:</strong> {{ req.clientName }}</div>
+                            <div class="col-md-4"><strong>التاريخ:</strong> {{ formatTimestamp(req.timestamp) }}</div>
+                        </div>
+                        <div class="mt-3"><button class="btn btn-primary" @click="viewRequestDetails(req)"><i class="fas fa-eye me-1"></i> عرض السجل والمحادثة</button></div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-md-4"><strong>المنتج:</strong> {{ req.productName }}</div>
-                        <div class="col-md-4"><strong>العميل:</strong> {{ req.clientName }}</div>
-                        <div class="col-md-4"><strong>التاريخ:</strong> {{ formatTimestamp(req.timestamp) }}</div>
-                    </div>
-                    <div class="mt-3"><button class="btn btn-primary" @click="viewRequestDetails(req)"><i class="fas fa-eye me-1"></i> عرض السجل والمحادثة</button></div>
                 </div>
             </main>
         </div>
+        
+        <div class="tab-pane fade" id="completed-requests-pane" role="tabpanel">
+            <main class="container py-4">
+                <div class="mb-4">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="search" v-model.trim="searchQuery" class="form-control" placeholder="ابحث بالكود أو اسم العميل...">
+                    </div>
+                </div>
+                <div v-if="loadingMyRequests" class="text-center"><div class="spinner-border"></div></div>
+                <div v-else-if="completedRequests.length === 0" class="text-center p-5 bg-white rounded-3">
+                    <p class="text-muted">لا يوجد طلبات مكتملة في سجلك بعد.</p>
+                </div>
+                <div v-else-if="filteredCompletedRequests.length === 0" class="text-center p-5 bg-white rounded-3">
+                    <p class="text-muted">لا توجد نتائج مطابقة لبحثك.</p>
+                </div>
+                <div v-else>
+                    <div v-for="req in filteredCompletedRequests" :key="req.id" class="request-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="ref-code">#{{ req.orderCode }}</span>
+                            <span class="status-badge" :class="getRequestStatusClass(req.status)">{{ req.status }}</span>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4"><strong>المنتج:</strong> {{ req.productName }}</div>
+                            <div class="col-md-4"><strong>العميل:</strong> {{ req.clientName }}</div>
+                            <div class="col-md-4"><strong>التاريخ:</strong> {{ formatTimestamp(req.timestamp) }}</div>
+                        </div>
+                        <div class="mt-3"><button class="btn btn-primary" @click="viewRequestDetails(req)"><i class="fas fa-eye me-1"></i> عرض السجل</button></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
     </div>
 
     <div class="modal fade" id="requestDetailsModal" tabindex="-1">
@@ -150,7 +188,7 @@
                             </p>
                             <div class="log-meta">{{ formatTimestamp(log.timestamp, true) }}</div>
                         </div>
-                         <div v-if="log.type === 'status_change'" class="text-center"><p class="log-content system mb-1"><i class="fas fa-flag"></i> تم تغيير الحالة إلى: <span class="badge" :class="getRequestStatusClass(log.content)">{{ log.content }}</span></p><div class="log-meta">{{ formatTimestamp(log.timestamp, true) }}</div></div>
+                        <div v-if="log.type === 'status_change'" class="text-center"><p class="log-content system mb-1"><i class="fas fa-flag"></i> تم تغيير الحالة إلى: <span class="badge" :class="getRequestStatusClass(log.content)">{{ log.content }}</span></p><div class="log-meta">{{ formatTimestamp(log.timestamp, true) }}</div></div>
                         <div v-if="log.type === 'modification_request'"><p class="log-content text-danger mb-1"><i class="fas fa-edit"></i> <strong>طلب تعديل:</strong> {{ log.content }}</p><div class="log-meta">بواسطة: {{ log.sender }} - {{ formatTimestamp(log.timestamp, true) }}</div></div>
                         <div v-if="log.type === 'delegate_approval'"><p class="log-content text-success text-center mb-1"><i class="fas fa-check-circle"></i> تم اعتماد التصميم من قبل المندوب.</p><div class="log-meta text-center">{{ formatTimestamp(log.timestamp, true) }}</div></div>
                         <div v-if="log.type === 'external_approval'"><p class="log-content text-success text-center mb-1"><i class="fas fa-user-check"></i> تم اعتماد التصميم بواسطة <strong>{{ log.sender }}</strong>.</p><div class="log-meta text-center">{{ formatTimestamp(log.timestamp, true) }}</div></div>
@@ -168,7 +206,7 @@
     </div>
 
     <div class="modal fade" id="modificationRequestModal" tabindex="-1">
-         <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header"><h5 class="modal-title">طلب تعديل على #{{ selectedRequest?.orderCode }}</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body"><label for="modNotes" class="form-label">يرجى كتابة التعديلات المطلوبة بوضوح:</label><textarea id="modNotes" v-model="modificationNotes" class="form-control" rows="5"></textarea></div>
@@ -214,6 +252,9 @@
             const loadingLog = ref(false);
             const modificationNotes = ref('');
             
+            // متغير جديد لحفظ قيمة البحث
+            const searchQuery = ref('');
+
             const userRoleForSelectedRequest = ref(null);
             const externalApprovalDoc = ref(null);
 
@@ -226,6 +267,29 @@
                 const unique = Array.from(new Set(combined.map(a => a.id)))
                     .map(id => combined.find(a => a.id === id));
                 return unique.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
+            });
+
+            // computed property جديد لعرض الطلبات الحالية فقط
+            const currentRequests = computed(() => {
+                return allMyRequests.value.filter(req => req.status !== 'مكتمل');
+            });
+            
+            // computed property جديد لجلب الطلبات المكتملة فقط
+            const completedRequests = computed(() => {
+                 return allMyRequests.value.filter(req => req.status === 'مكتمل');
+            });
+            
+            // computed property جديد لفلترة الطلبات المكتملة بناء على البحث
+            const filteredCompletedRequests = computed(() => {
+                if (!searchQuery.value.trim()) {
+                    return completedRequests.value;
+                }
+                const term = searchQuery.value.toLowerCase().trim();
+                return completedRequests.value.filter(req => {
+                    const codeMatch = req.orderCode.toString().includes(term);
+                    const nameMatch = req.clientName.toLowerCase().includes(term);
+                    return codeMatch || nameMatch;
+                });
             });
 
             const canInteract = computed(() => {
@@ -242,11 +306,17 @@
             const fetchNextOrderCode = async () => {
                 const q = query(collection(db, "designRequests"), orderBy("orderCode", "desc"), limit(1));
                 const querySnapshot = await getDocs(q);
-                let nextCode = 1000;
+                let latestCode = 999;
                 if (!querySnapshot.empty) {
-                    nextCode = querySnapshot.docs[0].data().orderCode + 1;
+                    const lastOrderData = querySnapshot.docs[0].data();
+                    if (lastOrderData.orderCode) {
+                        const lastCodeFromDB = parseInt(lastOrderData.orderCode, 10);
+                        if (!isNaN(lastCodeFromDB)) {
+                            latestCode = lastCodeFromDB;
+                        }
+                    }
                 }
-                nextOrderCode.value = nextCode;
+                nextOrderCode.value = latestCode + 1;
             };
 
             const fetchMyRequests = (uid) => {
@@ -257,10 +327,8 @@
                 });
             };
 
-            // ### تعديل ###: تم تعديل هذه الدالة بالكامل لتستخدم الاستعلام الصحيح
             const fetchExternalRequests = (userEmail) => {
                 if (!userEmail) return;
-                // Query the 'externalApprovals' subcollections across all documents
                 const q = query(collectionGroup(db, 'externalApprovals'), where('personEmail', '==', userEmail));
                 
                 onSnapshot(q, (snapshot) => {
@@ -268,7 +336,6 @@
                         externalRequests.value = [];
                         return;
                     }
-                    // For each approval doc found, get its parent (the main request doc)
                     const promises = snapshot.docs.map(doc => getDoc(doc.ref.parent.parent));
                     Promise.all(promises).then(results => {
                         externalRequests.value = results
@@ -305,7 +372,8 @@
                         .then(async () => {
                             Object.assign(newRequest, { productName: '', clientName: '', printType: 'فصل ألوان', dieCutType: 'فورمة موجودة', dimensions: { length: '', width: '', height: '' }, details: '' });
                             await fetchNextOrderCode();
-                            bootstrap.Tab.getOrCreateInstance(document.querySelector('#history-tab')).show();
+                            // الانتقال لتبويب الطلبات الحالية بعد الإرسال
+                            bootstrap.Tab.getOrCreateInstance(document.querySelector('#current-requests-tab')).show();
                         });
 
                 } catch (e) {
@@ -316,7 +384,6 @@
                 }
             };
             
-            // ### تعديل ###: تم تعديل هذه الدالة بالكامل لتجد مستند الاعتماد
             const viewRequestDetails = async (req) => {
                 selectedRequest.value = req;
                 communicationLog.value = [];
@@ -329,7 +396,6 @@
                     userRoleForSelectedRequest.value = 'delegate';
                 } else {
                     userRoleForSelectedRequest.value = 'external';
-                    // Query to find the specific approval document for the current user
                     const approversColRef = collection(db, `designRequests/${req.id}/externalApprovals`);
                     const q = query(approversColRef, where("personEmail", "==", currentUser.value.email), limit(1));
                     const querySnapshot = await getDocs(q);
@@ -375,7 +441,6 @@
                 }
             };
             
-            // ### تعديل ###: تم تعديل هذه الدالة لتستخدم المعرف الصحيح للمستند
             const approveDesign = async () => {
                 if (!selectedRequest.value) return;
                 const result = await Swal.fire({
@@ -400,7 +465,6 @@
                         selectedRequest.value.isDelegateApproved = true;
                     } 
                     else if (userRoleForSelectedRequest.value === 'external' && externalApprovalDoc.value) {
-                        // Use the auto-ID of the approval doc we found earlier
                         const approvalDocRef = doc(db, `designRequests/${reqId}/externalApprovals`, externalApprovalDoc.value.id);
                         batch.update(approvalDocRef, { status: 'approved' });
                         
@@ -447,8 +511,12 @@
                 userName, logout, formatTimestamp, isSubmitting, newRequest, nextOrderCode, submitNewRequest,
                 loadingMyRequests, myRequests, viewRequestDetails, openModificationRequestModal, getRequestStatusClass,
                 selectedRequest, loadingLog, communicationLog, approveDesign, modificationNotes, submitModificationRequest,
-                allMyRequests,
-                canInteract
+                canInteract,
+                // المتغيرات الجديدة التي تم إضافتها
+                searchQuery,
+                currentRequests,
+                completedRequests,
+                filteredCompletedRequests
             };
         }
     }).mount('#app');
